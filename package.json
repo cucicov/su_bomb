@@ -1,0 +1,12 @@
+{
+  "name": "war_puzzle",
+  "version": "1.0.0",
+  "dependencies": {
+    "p5": "^1.4.1",
+    "parcel-bundler": "^1.12.5"
+  },
+  "devDependencies": {
+    "@types/p5": "^1.4.1",
+    "typescript": "^4.6.2"
+  }
+}
