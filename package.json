@@ -2,7 +2,9 @@
   "name": "war_puzzle",
   "version": "1.0.0",
   "scripts": {
-    "start": "yarn run parcel index.html"
+    "start": "node .",
+    "build": "tsc",
+    "dev": "nodemon"
   },
   "dependencies": {
     "p5": "^1.4.1",
