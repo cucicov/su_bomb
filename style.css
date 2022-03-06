@@ -16,3 +16,14 @@ h1 {
   margin-right: -50%;
   transform: translate(-50%, -50%);
 }
+
+ h2 {
+   font-size: 5vmin;
+   text-shadow: 4px 4px 2px white;
+
+   position: absolute;
+   top: 10%;
+   left: 50%;
+   margin-right: -50%;
+   transform: translate(-50%, -50%);
+ }

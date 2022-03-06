@@ -29176,14 +29176,22 @@ var sketch = function sketch(p) {
       this.height = img.height;
       this.w = this.width / side;
       this.h = this.height / side;
-      console.log("constructor Puzzle");
-      this.hole1 = p.loadImage("https://proiectb.org/su/rocket1.png");
+      this.initializeCenterBackground();
       this.placePieces();
-    }
+    } // public setNewRocket(rocketImg2: p55.Image) {
+    //   this.img = rocketImg;
+    // }
+
 
     _createClass(Puzzle, [{
       key: "placePieces",
       value: function placePieces() {
+        // let ts = p.millis();
+        // while(p.millis() - ts < 400) {
+        //   console.log('timeout!!!!');
+        // }
+        console.log(this.img);
+
         for (var y = 0; y < this.side; y++) {
           for (var x = 0; x < this.side; x++) {
             var img = p.createImage(this.w, this.h);
@@ -29202,19 +29210,33 @@ var sketch = function sketch(p) {
     }, {
       key: "draw",
       value: function draw() {
+        p.stroke(255, 255 - p.round(255 / listOfNews.length * countNews), 0);
+        p.strokeWeight(10);
         p.rect(this.x - 1, this.y - 1, this.width + 1, this.height + 1);
         p.image(this.hole1, this.x - 1, this.y - 1);
         p.noFill();
         this.pieces.forEach(function (r) {
           return r.draw();
-        });
+        }); // stop game
+
+        if (isGameOver) {
+          this.canPlay = false;
+        }
+      }
+    }, {
+      key: "initializeCenterBackground",
+      value: function initializeCenterBackground() {
+        this.hole1 = p.loadImage(getHoleImage());
+      }
+    }, {
+      key: "initializeNewRocket",
+      value: function initializeNewRocket() {
+        this.img = getRocketImage();
       }
     }, {
       key: "mousePressed",
       value: function mousePressed(x, y) {
         var _this = this;
-
-        console.log("mousePressed");
 
         if (this.canPlay) {
           var m = p.createVector(x, y);
@@ -29236,8 +29258,6 @@ var sketch = function sketch(p) {
     }, {
       key: "mouseDragged",
       value: function mouseDragged(x, y) {
-        console.log("mouseDragged");
-
         if (this.isDragging) {
           var m = p.createVector(x, y);
           this.dragPiece.pos.set(m).add(this.clickOffset);
@@ -29246,8 +29266,6 @@ var sketch = function sketch(p) {
     }, {
       key: "mouseReleased",
       value: function mouseReleased() {
-        console.log("mouseReleased");
-
         if (this.isDragging) {
           this.isDragging = false;
           this.snapTo(this.dragPiece);
@@ -29309,8 +29327,7 @@ var sketch = function sketch(p) {
         var nrCorrect = 0;
         this.pieces.forEach(function (pc) {
           var correctIndex = pc.i;
-          var actualIndex = p.round((pc.pos.x - _this2.x) / _this2.w + (pc.pos.y - _this2.y) / _this2.h * _this2.side);
-          console.log("Indexes: " + actualIndex + ":" + correctIndex);
+          var actualIndex = p.round((pc.pos.x - _this2.x) / _this2.w + (pc.pos.y - _this2.y) / _this2.h * _this2.side); // console.log("Indexes: " + actualIndex + ":" + correctIndex);
 
           if (actualIndex === correctIndex) {
             nrCorrect += 1;
@@ -29318,24 +29335,35 @@ var sketch = function sketch(p) {
         });
 
         if (nrCorrect === nrCorrectNeeded) {
-          console.log("Good Job! " + news_timeout); // decrease news appearance timeout
-
-          if (news_timeout > 3500) {
-            news_timeout = news_timeout * 0.9;
+          // decrease news appearance timeout
+          if (news_timeout > 5500) {
+            news_timeout = news_timeout * timerDecreaseCoef;
           }
 
-          if (countImages > 1) {
-            countImages--;
+          console.log("Good Job! " + news_timeout); //increase news number
 
-            if (rocketsCompleted < totalRockets) {
-              rocketsCompleted++;
+          if (countNews > 1) {
+            listOfNews.splice(countNews - 1, 1);
+            countNews--;
+          } // increase rockets number
+
+
+          if (rocketsCompleted < totalRockets) {
+            rocketsCompleted++;
+
+            if (rocketsCompleted == totalRockets) {
+              isGameOver = true;
+              isWin = true;
             }
-          }
+          } // load new rocket
+
 
           this.pieces = [];
-          this.hole1 = p.loadImage("https://proiectb.org/su/rocket1.png");
+          this.initializeCenterBackground();
+          this.initializeNewRocket();
           this.placePieces();
           this.canPlay = true;
+          console.log("Rockets completed: " + rocketsCompleted);
           scoreElement.remove();
           scoreElement = p.createElement("h1", rocketsCompleted + "/" + totalRockets);
         } else {
@@ -29350,84 +29378,44 @@ var sketch = function sketch(p) {
   var puzzle;
   var imgCb;
   var img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20;
-  var listOfImages = [];
-  var countImages;
+  var winImg, loseImg;
+  var listOfNews = [];
+  var countNews;
   var news_timeout;
   var rocketsCompleted;
   var totalRockets;
+  var timerDecreaseCoef;
   var scoreElement;
-  var alphaNewNews; // function preload() {
-  //   imgCb = loadImage("https://s3-us-west-2.amazonaws.com/s.cdpn.io/254249/Exit_planet_dust_album_cover.jpg");
-  // }
-  // function setup() {
-  //   createCanvas(windowWidth, windowHeight);
-  //   let x0 = windowWidth/2 - imgCb.width/2;
-  //   let y0 = windowHeight/2 - imgCb.height/2;
-  //   puzzle = new Puzzle(x0, y0, imgCb, 3);
-  // }
-  // function draw() {
-  //   background("white");
-  //   puzzle.draw();
-  // }
-
-  p.mousePressed = function () {
-    puzzle.mousePressed(p.mouseX, p.mouseY);
-  };
-
-  p.mouseDragged = function () {
-    puzzle.mouseDragged(p.mouseX, p.mouseY);
-  };
-
-  p.mouseReleased = function () {
-    puzzle.mouseReleased();
-  };
-
-  p.windowResized = function () {
-    resizeCanvas(p.windowWidth, p.windowHeight);
-  };
-
-  p.keyPressed = function () {
-    if (p.keyCode === p.LEFT_ARROW) {
-      listOfImages.splice(countImages - 1, 1);
-      countImages--;
-      console.log('countImages=' + countImages);
-      console.log(listOfImages);
-    } else if (p.keyCode === p.RIGHT_ARROW) {
-      if (countImages < listOfImages.length) {
-        countImages++;
-      }
-
-      console.log('countImages=' + countImages);
-    }
-  }; //
-  // const CELL_COUNT = 4;
-  //
-  // const rect = (x: number, y: number, width: number, color: p55.Color) => {
-  //
-  //   const cellWidth = width / CELL_COUNT;
-  //
-  //   for (let col=0; col<CELL_COUNT; col++) {
-  //     for (let row=0; row<CELL_COUNT; row++) {
-  //       const alpha = p.noise(row, col) * 255;
-  //       color.setAlpha(alpha);
-  //       p.fill(color);
-  //       p.rect(x + cellWidth * row, y + cellWidth * col, cellWidth, cellWidth);
-  //     }
-  //   }
-  // }
-
+  var alphaNewNews;
+  var timer;
+  var isGameOver;
+  var isWin;
+  var triggerNews;
+  var rockets = [];
+  var rocketBgs = [];
 
   p.preload = function () {
-    imgCb = p.loadImage("https://proiectb.org/su/rocket1.png");
+    imgCb = p.loadImage("https://proiectb.org/su/rocket1.jpg");
   };
 
   p.setup = function () {
-    news_timeout = 15000;
-    p.createCanvas(p.windowWidth, p.windowHeight);
-    totalRockets = 24;
-    rocketsCompleted = 0; // p.noLoop();
-    // p.noStroke();
+    news_timeout = 10000; // originally 15000
 
+    alphaNewNews = 0;
+    isGameOver = false;
+    isWin = false;
+    timer = new ( /*#__PURE__*/_createClass(function Timer() {
+      _classCallCheck(this, Timer);
+
+      this.minutes = 0;
+      this.seconds = 0;
+      this.millis = 0;
+    }))();
+    p.createCanvas(p.windowWidth, p.windowHeight);
+    totalRockets = 4;
+    timerDecreaseCoef = 0.5; // originally 0.95
+
+    rocketsCompleted = 0;
     scoreElement = p.createElement("h1", rocketsCompleted + "/" + totalRockets);
     img1 = p.loadImage('https://proiectb.org/su/img1.JPG');
     img2 = p.loadImage('https://proiectb.org/su/img2.JPG');
@@ -29449,307 +29437,136 @@ var sketch = function sketch(p) {
     img18 = p.loadImage('https://proiectb.org/su/img18.JPG');
     img19 = p.loadImage('https://proiectb.org/su/img19.JPG');
     img20 = p.loadImage('https://proiectb.org/su/img20.JPG');
-    countImages = 2;
-    listOfImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20];
+    winImg = p.loadImage('https://proiectb.org/su/win.png');
+    loseImg = p.loadImage('https://proiectb.org/su/lose.png');
+    countNews = 2;
+    listOfNews = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, img15, img16, img17, img18, img19, img20];
+    rocketBgs = ["https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg"];
+    rockets = [p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg")];
     var x0 = p.windowWidth / 2 - imgCb.width / 2;
     var y0 = p.windowHeight / 2 - imgCb.height / 2;
     puzzle = new Puzzle(x0, y0, imgCb, 3);
   };
 
   p.draw = function () {
-    // p.background(0);
-    // const color = p.color('green');
-    // rect(100, 100, 240, color);
-    p.background(123);
+    p.background(123); // display timer
 
-    if (p.millis() % news_timeout > news_timeout - 10) {
-      console.log("TRIGGER increase news");
+    p.fill(255, 255 - p.round(255 / listOfNews.length * countNews), 0);
+    p.noStroke();
+    p.textSize(44);
+    p.text(timer.minutes + ":" + timer.seconds + ":" + timer.millis, p.windowWidth - 200, 30, 70, 80); // while game NOT OVER.
 
-      if (countImages < listOfImages.length) {
-        countImages++;
+    if (!isGameOver) {
+      timer.minutes = p.floor(p.millis() / 60000);
+      timer.seconds = p.floor(p.millis() / 1000 % 60);
+      timer.millis = p.millis() % 1000; // console.log(news_timeout + ":" + p.millis() % news_timeout);
+      // mechanism to trigger news onyl once per cycle of timeout.
+
+      var currentTimeout = p.millis() % news_timeout;
+
+      if (triggerNews && currentTimeout > news_timeout - 500) {
+        console.log("TRIGGER increase news");
+
+        if (countNews < listOfNews.length) {
+          countNews++; // reset new news alpha
+
+          alphaNewNews = 0; // game over if max news reached.
+
+          if (countNews == listOfNews.length) {
+            isGameOver = true;
+          }
+        }
+
+        triggerNews = false;
+      } // reset trigger when timout starts from 0
+
+
+      if (currentTimeout > 0 && currentTimeout < 500) {
+        triggerNews = true;
       }
+    } // increase new news alpha
+
+
+    if (alphaNewNews < 255) {
+      alphaNewNews++;
     }
 
-    var bottomOffset = 50; // tint(255, 126);
-    //draw new news
+    var bottomOffset = 50; //draw new news
 
-    var newIndex = countImages - 1;
-    bottomOffset += listOfImages[newIndex].height;
-    p.image(listOfImages[newIndex], 50, p.height - bottomOffset);
-    bottomOffset += 50; // draw news
-
-    for (var i = countImages - 2; i > 0; i--) {
-      bottomOffset += listOfImages[i].height;
-      p.image(listOfImages[i], 50, p.height - bottomOffset);
+    if (countNews > 1) {
+      // hack workaround ??
+      p.tint(255, alphaNewNews);
+      var newIndex = countNews - 1;
+      bottomOffset += listOfNews[newIndex].height;
+      p.image(listOfNews[newIndex], 50, p.height - bottomOffset);
       bottomOffset += 50;
-    } // p.background("white");
+      p.tint(255, 255);
+    } // draw news
 
+
+    for (var i = countNews - 2; i > 0; i--) {
+      bottomOffset += listOfNews[i].height;
+      p.image(listOfNews[i], 50, p.height - bottomOffset);
+      bottomOffset += 50;
+    }
 
     puzzle.draw();
+
+    if (isGameOver) {
+      //GAME OVER
+      p.fill(p.color(0, 0, 0, 170));
+      p.rect(0, 0, p.windowWidth, p.windowHeight);
+
+      if (isWin) {
+        p.image(winImg, this.windowWidth / 2 - winImg.width / 2, this.windowHeight / 2 - winImg.height / 2);
+        p.fill(p.color(0, 255, 70, 255));
+        p.text(timer.minutes + ":" + timer.seconds + ":" + timer.millis, p.windowWidth / 2 - 70, 130, 70, 80);
+      } else {
+        p.image(loseImg, this.windowWidth / 2 - loseImg.width / 2, this.windowHeight / 2 - loseImg.height / 2);
+      }
+    }
   };
+
+  p.mousePressed = function () {
+    puzzle.mousePressed(p.mouseX, p.mouseY);
+  };
+
+  p.mouseDragged = function () {
+    puzzle.mouseDragged(p.mouseX, p.mouseY);
+  };
+
+  p.mouseReleased = function () {
+    puzzle.mouseReleased();
+  };
+
+  p.windowResized = function () {
+    resizeCanvas(p.windowWidth, p.windowHeight);
+  };
+
+  p.keyPressed = function () {
+    if (p.keyCode === p.LEFT_ARROW) {
+      listOfNews.splice(countNews - 1, 1);
+      countNews--;
+      console.log('countNews=' + countNews);
+    } else if (p.keyCode === p.RIGHT_ARROW) {
+      if (countNews < listOfNews.length) {
+        countNews++;
+      }
+
+      console.log('countNews=' + countNews);
+    }
+  };
+
+  function getHoleImage() {
+    return rocketBgs[rocketsCompleted];
+  }
+
+  function getRocketImage() {
+    return rockets[rocketsCompleted];
+  }
 };
 
-new p5_1.default(sketch); // img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20;
-// listOfImages;
-// countImages;
-//
-// function setup() {
-//   createCanvas(windowWidth, windowHeight);
-//
-//   img1 = loadImage('assets/img1.JPG');
-//   img2 = loadImage('assets/img2.JPG');
-//   img3 = loadImage('assets/img3.JPG');
-//   img4 = loadImage('assets/img4.JPG');
-//   img5 = loadImage('assets/img5.JPG');
-//   img6 = loadImage('assets/img6.JPG');
-//   img7 = loadImage('assets/img7.JPG');
-//   img8 = loadImage('assets/img8.JPG');
-//   img9 = loadImage('assets/img9.JPG');
-//   img10 = loadImage('assets/img10.JPG');
-//   img11 = loadImage('assets/img11.JPG');
-//   img12 = loadImage('assets/img12.JPG');
-//   img13 = loadImage('assets/img13.JPG');
-//   img14 = loadImage('assets/img14.JPG');
-//   img15 = loadImage('assets/img15.JPG');
-//   img16 = loadImage('assets/img16.JPG');
-//   img17 = loadImage('assets/img17.JPG');
-//   img18 = loadImage('assets/img18.JPG');
-//   img19 = loadImage('assets/img19.JPG');
-//   img20 = loadImage('assets/img20.JPG');
-//
-//   countImages = 1;
-//   listOfImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20];
-// }
-//
-// function draw() {
-//   background(220);
-//
-//   bottomOffset = 50;
-//   for (i = countImages-1; i > 0; i--) {
-//     bottomOffset += listOfImages[i].height;
-//     image(listOfImages[i], 50, height - bottomOffset);
-//     bottomOffset += 50;
-//   }
-//
-// }
-//
-// function mousePressed(event) {
-//
-// }
-//
-// function keyPressed() {
-//   if (keyCode === LEFT_ARROW) {
-//     listOfImages.splice(countImages-1, 1)
-//     countImages--;
-//     console.log('countImages=' + countImages);
-//     console.log(listOfImages);
-//   } else if (keyCode === RIGHT_ARROW) {
-//     if (countImages < listOfImages.length) {
-//       countImages++;
-//     }
-//     console.log('countImages=' + countImages);
-//   }
-// }
-//
-// /*
-//   Johan Karlsson (DonKarlssonSan)
-// */
-//
-//
-// class Piece {
-//   constructor (public pos: p55.Vector, private img: p55.Image, public i: number) {
-//     this.width = img.width;
-//     this.height = img.height;
-//   }
-//
-//   draw() {
-//     image(this.img, this.pos.x, this.pos.y);
-//   }
-//
-//   hits(hitpos: p55.Vector) {
-//     if(hitpos.x > this.pos.x &&
-//         hitpos.x < this.pos.x + this.width &&
-//         hitpos.y > this.pos.y &&
-//         hitpos.y < this.pos.y + this.height) {
-//       return true;
-//     }
-//     return false;
-//   }
-// }
-//
-//
-// class Puzzle {
-//   private pieces: Array<Piece>;
-//   private dragPiece: Piece;
-//   private isDragging: boolean = false;
-//   private canPlay: boolean = true;
-//   private clickOffset: p55.Vector;
-//   private w: number;
-//   private h: number;
-//
-//   constructor(
-//       private x: number,
-//   private y: number,
-//   private img: p55.Image,
-//   private side: number) {
-//
-//   this.pieces = [];
-//   this.width = img.width;
-//   this.height = img.height;
-//   this.w = this.width/side;
-//   this.h = this.height/side;
-//
-//   this.placePieces();
-// }
-//
-// private placePieces() {
-//   for(let y = 0; y < this.side; y++) {
-//     for(let x = 0; x < this.side; x++) {
-//       let img = createImage(this.w, this.h);
-//       img.copy(this.img, this.w*x, this.h*y, this.w, this.h, 0, 0, this.w, this.h);
-//       let pos = this.randomPos(this.w, this.h);
-//       let index = x + y * this.side;
-//       this.pieces.push(new Piece(pos, img, index));
-//     }
-//   }
-// }
-//
-// private randomPos(marginRight: number, marginBottom: number) {
-//   return createVector(
-//       random(0, windowWidth-marginRight),
-//       random(0, windowHeight-marginBottom));
-// }
-//
-// public draw() {
-//   rect(this.x-1, this.y-1, this.width+1, this.height+1);
-//   noFill();
-//   this.pieces.forEach(r => r.draw());
-// }
-//
-// public mousePressed(x: number, y: number) {
-//   if(this.canPlay) {
-//     let m = createVector(x, y);
-//     let index: number;
-//     this.pieces.forEach((p, i) => {
-//       if(p.hits(m)) {
-//         this.clickOffset = p55.Vector.sub(p.pos, m);
-//         this.isDragging = true;
-//         this.dragPiece = p;
-//         index = i;
-//       }
-//     });
-//     if(this.isDragging) {
-//       this.putOnTop(index);
-//     }
-//   }
-// }
-//
-// public mouseDragged(x: number, y: number) {
-//   if(this.isDragging) {
-//     let m = createVector(x, y);
-//     this.dragPiece.pos.set(m).add(this.clickOffset);
-//   }
-// }
-//
-// public mouseReleased() {
-//   if(this.isDragging) {
-//     this.isDragging = false;
-//     this.snapTo(this.dragPiece);
-//     this.checkEndGame();
-//   }
-// }
-//
-// private putOnTop(index: number) {
-//   this.pieces.splice(index, 1);
-//   this.pieces.push(this.dragPiece);
-// }
-//
-// public snapTo(p: Piece) {
-//   let dx = this.w/2;
-//   let dy = this.h/2;
-//   let x2 = this.x + this.width;
-//   let y2 = this.y + this.height;
-//   for(let y = this.y; y < y2; y += this.h) {
-//     for(let x = this.x; x < x2; x += this.w) {
-//       if(this.shouldSnapToX(p, x, dx, dy, y2)) {
-//         p.pos.x = x;
-//       }
-//       if(this.shouldSnapToY(p, y, dx, dy, x2)) {
-//         p.pos.y = y;
-//       }
-//     }
-//   }
-// }
-//
-// private shouldSnapToX(p, x, dx, dy, y2) {
-//   return this.isOnGrid(p.pos.x, x, dx) && this.isInsideFrame(p.pos.y, this.y, y2-this.h, dy)
-// }
-//
-// private shouldSnapToY(p, y, dx, dy, x2) {
-//   return this.isOnGrid(p.pos.y, y, dy) && this.isInsideFrame(p.pos.x, this.x, x2-this.w, dx)
-// }
-//
-// private isOnGrid(actualPos, gridPos, d) {
-//   return actualPos > gridPos - d && actualPos < gridPos + d;
-// }
-//
-// private isInsideFrame(actualPos, frameStart, frameEnd, d) {
-//   return actualPos > frameStart - d && actualPos < frameEnd + d;
-// }
-//
-// private checkEndGame() {
-//   let nrCorrectNeeded = this.side * this.side;
-//   let nrCorrect = 0;
-//   this.pieces.forEach(p => {
-//     let correctIndex = p.i;
-//     let actualIndex = (p.pos.x - this.x)/this.w + (p.pos.y - this.y)/this.h * this.side;
-//     if(actualIndex === correctIndex) {
-//       nrCorrect += 1;
-//     }
-//   });
-//   if(nrCorrect === nrCorrectNeeded) {
-//     let h1 = createElement("h1", "Good Job!");
-//     this.canPlay = false;
-//   } else {
-//     console.log("Right places: " + nrCorrect);
-//   }
-// }
-// }
-//
-// let puzzle: Puzzle;
-// let imgCb: p55.Image;
-//
-// function preload() {
-//   imgCb = loadImage("https://s3-us-west-2.amazonaws.com/s.cdpn.io/254249/Exit_planet_dust_album_cover.jpg");
-// }
-//
-// function setup() {
-//   createCanvas(windowWidth, windowHeight);
-//   let x0 = windowWidth/2 - imgCb.width/2;
-//   let y0 = windowHeight/2 - imgCb.height/2;
-//   puzzle = new Puzzle(x0, y0, imgCb, 3);
-// }
-//
-// function draw() {
-//   background("white");
-//   puzzle.draw();
-// }
-//
-// function mousePressed() {
-//   puzzle.mousePressed(mouseX, mouseY);
-// }
-//
-// function mouseDragged() {
-//   puzzle.mouseDragged(mouseX, mouseY);
-// }
-//
-// function mouseReleased() {
-//   puzzle.mouseReleased();
-// }
-//
-// function windowResized() {
-//   resizeCanvas(windowWidth, windowHeight);
-// }
+new p5_1.default(sketch);
 },{"p5":"node_modules/p5/lib/p5.min.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -29778,7 +29595,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62958" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62888" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
