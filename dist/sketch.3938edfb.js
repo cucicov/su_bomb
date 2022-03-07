@@ -29413,7 +29413,7 @@ var sketch = function sketch(p) {
     }))();
     p.createCanvas(p.windowWidth, p.windowHeight);
     totalRockets = 4;
-    timerDecreaseCoef = 0.5; // originally 0.95
+    timerDecreaseCoef = 0.8; // originally 0.95
 
     rocketsCompleted = 0;
     scoreElement = p.createElement("h1", rocketsCompleted + "/" + totalRockets);
@@ -29424,25 +29424,66 @@ var sketch = function sketch(p) {
     img5 = p.loadImage('https://proiectb.org/su/img5.JPG');
     img6 = p.loadImage('https://proiectb.org/su/img6.JPG');
     img7 = p.loadImage('https://proiectb.org/su/img7.JPG');
-    img8 = p.loadImage('https://proiectb.org/su/img8.JPG');
-    img9 = p.loadImage('https://proiectb.org/su/img9.JPG');
-    img10 = p.loadImage('https://proiectb.org/su/img10.JPG');
-    img11 = p.loadImage('https://proiectb.org/su/img11.JPG');
-    img12 = p.loadImage('https://proiectb.org/su/img12.JPG');
-    img13 = p.loadImage('https://proiectb.org/su/img13.JPG');
-    img14 = p.loadImage('https://proiectb.org/su/img14.JPG');
-    img15 = p.loadImage('https://proiectb.org/su/img15.JPG');
-    img16 = p.loadImage('https://proiectb.org/su/img16.JPG');
-    img17 = p.loadImage('https://proiectb.org/su/img17.JPG');
-    img18 = p.loadImage('https://proiectb.org/su/img18.JPG');
-    img19 = p.loadImage('https://proiectb.org/su/img19.JPG');
-    img20 = p.loadImage('https://proiectb.org/su/img20.JPG');
+    img8 = p.loadImage('https://proiectb.org/su/img8.JPG'); // img9 = p.loadImage('https://proiectb.org/su/img9.JPG');
+    // img10 = p.loadImage('https://proiectb.org/su/img10.JPG');
+    // img11 = p.loadImage('https://proiectb.org/su/img11.JPG');
+    // img12 = p.loadImage('https://proiectb.org/su/img12.JPG');
+    // img13 = p.loadImage('https://proiectb.org/su/img13.JPG');
+    // img14 = p.loadImage('https://proiectb.org/su/img14.JPG');
+    // img15 = p.loadImage('https://proiectb.org/su/img15.JPG');
+    // img16 = p.loadImage('https://proiectb.org/su/img16.JPG');
+    // img17 = p.loadImage('https://proiectb.org/su/img17.JPG');
+    // img18 = p.loadImage('https://proiectb.org/su/img18.JPG');
+    // img19 = p.loadImage('https://proiectb.org/su/img19.JPG');
+    // img20 = p.loadImage('https://proiectb.org/su/img20.JPG');
+
     winImg = p.loadImage('https://proiectb.org/su/win.png');
     loseImg = p.loadImage('https://proiectb.org/su/lose.png');
     countNews = 2;
-    listOfNews = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, img15, img16, img17, img18, img19, img20];
-    rocketBgs = ["https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg", "https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg"];
-    rockets = [p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg"), p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg")];
+    listOfNews = [img1, img2, img3, img4, img5, img6, img7, img8 // img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16, img17, img18, img19, img20, img15, img16, img17, img18, img19, img20
+    ];
+    rocketBgs = ["https://proiectb.org/su/rocket1_bg.jpg", "https://proiectb.org/su/rocket2_bg.jpg", "https://proiectb.org/su/rocket3_bg.jpg", "https://proiectb.org/su/rocket4_bg.jpg" // "https://proiectb.org/su/rocket1_bg.jpg",
+    // "https://proiectb.org/su/rocket2_bg.jpg",
+    // "https://proiectb.org/su/rocket3_bg.jpg",
+    // "https://proiectb.org/su/rocket4_bg.jpg",
+    // "https://proiectb.org/su/rocket1_bg.jpg",
+    // "https://proiectb.org/su/rocket2_bg.jpg",
+    // "https://proiectb.org/su/rocket3_bg.jpg",
+    // "https://proiectb.org/su/rocket4_bg.jpg",
+    // "https://proiectb.org/su/rocket1_bg.jpg",
+    // "https://proiectb.org/su/rocket2_bg.jpg",
+    // "https://proiectb.org/su/rocket3_bg.jpg",
+    // "https://proiectb.org/su/rocket4_bg.jpg",
+    // "https://proiectb.org/su/rocket1_bg.jpg",
+    // "https://proiectb.org/su/rocket2_bg.jpg",
+    // "https://proiectb.org/su/rocket3_bg.jpg",
+    // "https://proiectb.org/su/rocket4_bg.jpg",
+    // "https://proiectb.org/su/rocket1_bg.jpg",
+    // "https://proiectb.org/su/rocket2_bg.jpg",
+    // "https://proiectb.org/su/rocket3_bg.jpg",
+    // "https://proiectb.org/su/rocket4_bg.jpg",
+    ];
+    rockets = [p.loadImage("https://proiectb.org/su/rocket1.jpg"), p.loadImage("https://proiectb.org/su/rocket2.jpg"), p.loadImage("https://proiectb.org/su/rocket3.jpg"), p.loadImage("https://proiectb.org/su/rocket4.jpg") // p.loadImage("https://proiectb.org/su/rocket1.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket2.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket3.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket4.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket1.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket2.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket3.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket4.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket1.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket2.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket3.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket4.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket1.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket2.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket3.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket4.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket1.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket2.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket3.jpg"),
+    // p.loadImage("https://proiectb.org/su/rocket4.jpg")
+    ];
     var x0 = p.windowWidth / 2 - imgCb.width / 2;
     var y0 = p.windowHeight / 2 - imgCb.height / 2;
     puzzle = new Puzzle(x0, y0, imgCb, 3);
@@ -29595,7 +29636,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50530" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64052" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
