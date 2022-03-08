@@ -29487,84 +29487,85 @@ var sketch = function sketch(p) {
     puzzle = new Puzzle(x0, y0, imgCb, 3);
   };
 
-  p.draw = function () {
-    p.background(123); // display timer
-
-    p.fill(255, 255 - p.round(255 / listOfNews.length * countNews), 0);
-    p.noStroke();
-    p.textSize(44);
-    p.text(timer.minutes + ":" + timer.seconds + ":" + timer.millis, p.windowWidth - 200, 30, 70, 80); // while game NOT OVER.
-
-    if (!isGameOver) {
-      timer.minutes = p.floor(p.millis() / 60000);
-      timer.seconds = p.floor(p.millis() / 1000 % 60);
-      timer.millis = p.millis() % 1000; // console.log(news_timeout + ":" + p.millis() % news_timeout);
-      // mechanism to trigger news onyl once per cycle of timeout.
-
-      var currentTimeout = p.millis() % news_timeout;
-
-      if (triggerNews && currentTimeout > news_timeout - 500) {
-        // console.log("TRIGGER increase news");
-        if (countNews < listOfNews.length) {
-          countNews++; // reset new news alpha
-
-          alphaNewNews = 0; // game over if max news reached.
-
-          if (countNews == listOfNews.length) {
-            isGameOver = true;
-          }
-        }
-
-        triggerNews = false;
-      } // reset trigger when timout starts from 0
-
-
-      if (currentTimeout > 0 && currentTimeout < 500) {
-        triggerNews = true;
-      }
-    } // increase new news alpha
-
-
-    if (alphaNewNews < 255) {
-      alphaNewNews++;
-    }
-
-    var bottomOffset = 50; //draw new news
-
-    if (countNews > 1) {
-      // hack workaround ??
-      p.tint(255, alphaNewNews);
-      var newIndex = countNews - 1;
-      bottomOffset += listOfNews[newIndex].height;
-      p.image(listOfNews[newIndex], 50, p.height - bottomOffset);
-      bottomOffset += 50;
-      p.tint(255, 255);
-    } // draw news
-
-
-    for (var i = countNews - 2; i > 0; i--) {
-      bottomOffset += listOfNews[i].height;
-      p.image(listOfNews[i], 50, p.height - bottomOffset);
-      bottomOffset += 50;
-    }
-
-    puzzle.draw();
-
-    if (isGameOver) {
-      //GAME OVER
-      p.fill(p.color(0, 0, 0, 170));
-      p.rect(0, 0, p.windowWidth, p.windowHeight);
-
-      if (isWin) {
-        p.image(winImg, this.windowWidth / 2 - winImg.width / 2, this.windowHeight / 2 - winImg.height / 2);
-        p.fill(p.color(0, 255, 70, 255));
-        p.text(timer.minutes + ":" + timer.seconds + ":" + timer.millis, p.windowWidth / 2 - 70, 130, 70, 80);
-      } else {
-        p.image(loseImg, this.windowWidth / 2 - loseImg.width / 2, this.windowHeight / 2 - loseImg.height / 2);
-      }
-    }
-
-    p.noLoop();
+  p.draw = function () {// p.background(123);
+    //
+    // // display timer
+    // p.fill(255, 255 - p.round((255/listOfNews.length) * countNews), 0);
+    // p.noStroke();
+    // p.textSize(44);
+    // p.text(timer.minutes + ":" + timer.seconds + ":" + timer.millis,
+    //     p.windowWidth - 200, 30, 70, 80);
+    //
+    // // while game NOT OVER.
+    // if (!isGameOver) {
+    //   timer.minutes = p.floor(p.millis() / 60000);
+    //   timer.seconds = p.floor((p.millis() / 1000) % 60);
+    //   timer.millis = p.millis() % 1000;
+    //
+    //   // console.log(news_timeout + ":" + p.millis() % news_timeout);
+    //
+    //   // mechanism to trigger news onyl once per cycle of timeout.
+    //   let currentTimeout = p.millis() % news_timeout;
+    //   if (triggerNews && currentTimeout > news_timeout - 500) {
+    //     // console.log("TRIGGER increase news");
+    //     if (countNews < listOfNews.length) {
+    //       countNews++;
+    //       // reset new news alpha
+    //       alphaNewNews = 0;
+    //
+    //       // game over if max news reached.
+    //       if (countNews == listOfNews.length) {
+    //         isGameOver = true;
+    //       }
+    //     }
+    //     triggerNews = false;
+    //   }
+    //   // reset trigger when timout starts from 0
+    //   if (currentTimeout > 0 && currentTimeout < 500) {
+    //     triggerNews = true;
+    //   }
+    // }
+    //
+    // // increase new news alpha
+    // if (alphaNewNews < 255) {
+    //   alphaNewNews++;
+    // }
+    //
+    // let bottomOffset = 50;
+    // //draw new news
+    // if (countNews > 1) { // hack workaround ??
+    //   p.tint(255, alphaNewNews);
+    //   let newIndex: number = countNews - 1;
+    //   bottomOffset += listOfNews[newIndex].height;
+    //   p.image(listOfNews[newIndex], 50, p.height - bottomOffset);
+    //   bottomOffset += 50;
+    //   p.tint(255, 255);
+    // }
+    //
+    // // draw news
+    // for (let i = countNews-2; i > 0; i--) {
+    //   bottomOffset += listOfNews[i].height;
+    //   p.image(listOfNews[i], 50, p.height - bottomOffset);
+    //   bottomOffset += 50;
+    // }
+    //
+    // puzzle.draw();
+    //
+    // if (isGameOver) { //GAME OVER
+    //   p.fill(p.color(0, 0, 0, 170));
+    //   p.rect(0, 0, p.windowWidth, p.windowHeight);
+    //   if (isWin) {
+    //     p.image(winImg, this.windowWidth / 2 - winImg.width / 2,
+    //         this.windowHeight / 2 - winImg.height / 2);
+    //
+    //     p.fill(p.color(0, 255, 70, 255));
+    //     p.text(timer.minutes + ":" + timer.seconds + ":" + timer.millis,
+    //         p.windowWidth/2 - 70, 130, 70, 80);
+    //   } else {
+    //     p.image(loseImg, this.windowWidth / 2 - loseImg.width / 2,
+    //         this.windowHeight / 2 - loseImg.height / 2);
+    //   }
+    // }
   };
 
   p.mousePressed = function () {
