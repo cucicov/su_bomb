@@ -2,7 +2,7 @@
   "name": "war_puzzle",
   "version": "1.0.0",
   "scripts": {
-    "start": "yarn run parcel index.html",
+    "start": "parcel index.html",
     "build": "parcel build index.html",
     "heroku-postbuild": "parcel build index.html"
   },
