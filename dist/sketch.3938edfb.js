@@ -29190,8 +29190,7 @@ var sketch = function sketch(p) {
         // while(p.millis() - ts < 400) {
         //   console.log('timeout!!!!');
         // }
-        console.log(this.img);
-
+        // console.log(this.img);
         for (var y = 0; y < this.side; y++) {
           for (var x = 0; x < this.side; x++) {
             var img = p.createImage(this.w, this.h);
@@ -29338,9 +29337,9 @@ var sketch = function sketch(p) {
           // decrease news appearance timeout
           if (news_timeout > 5500) {
             news_timeout = news_timeout * timerDecreaseCoef;
-          }
+          } // console.log("Good Job! " + news_timeout);
+          //increase news number
 
-          console.log("Good Job! " + news_timeout); //increase news number
 
           if (countNews > 1) {
             listOfNews.splice(countNews - 1, 1);
@@ -29362,12 +29361,11 @@ var sketch = function sketch(p) {
           this.initializeCenterBackground();
           this.initializeNewRocket();
           this.placePieces();
-          this.canPlay = true;
-          console.log("Rockets completed: " + rocketsCompleted);
+          this.canPlay = true; // console.log("Rockets completed: " + rocketsCompleted);
+
           scoreElement.remove();
           scoreElement = p.createElement("h1", rocketsCompleted + "/" + totalRockets);
-        } else {
-          console.log("Right places: " + nrCorrect);
+        } else {// console.log("Right places: " + nrCorrect);
         }
       }
     }]);
@@ -29506,8 +29504,7 @@ var sketch = function sketch(p) {
       var currentTimeout = p.millis() % news_timeout;
 
       if (triggerNews && currentTimeout > news_timeout - 500) {
-        console.log("TRIGGER increase news");
-
+        // console.log("TRIGGER increase news");
         if (countNews < listOfNews.length) {
           countNews++; // reset new news alpha
 
@@ -29581,20 +29578,18 @@ var sketch = function sketch(p) {
   };
 
   p.windowResized = function () {
-    resizeCanvas(p.windowWidth, p.windowHeight);
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
 
   p.keyPressed = function () {
     if (p.keyCode === p.LEFT_ARROW) {
       listOfNews.splice(countNews - 1, 1);
-      countNews--;
-      console.log('countNews=' + countNews);
+      countNews--; // console.log('countNews=' + countNews);
     } else if (p.keyCode === p.RIGHT_ARROW) {
       if (countNews < listOfNews.length) {
         countNews++;
-      }
+      } // console.log('countNews=' + countNews);
 
-      console.log('countNews=' + countNews);
     }
   };
 
@@ -29636,7 +29631,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64052" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63357" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -67,7 +67,7 @@ const sketch = function(p) {
       // while(p.millis() - ts < 400) {
       //   console.log('timeout!!!!');
       // }
-      console.log(this.img);
+      // console.log(this.img);
       for(let y = 0; y < this.side; y++) {
         for(let x = 0; x < this.side; x++) {
           let img = p.createImage(this.w, this.h);
@@ -197,7 +197,7 @@ const sketch = function(p) {
           news_timeout = news_timeout * timerDecreaseCoef;
         }
 
-        console.log("Good Job! " + news_timeout);
+        // console.log("Good Job! " + news_timeout);
 
         //increase news number
         if (countNews > 1) {
@@ -221,12 +221,12 @@ const sketch = function(p) {
         this.placePieces();
         this.canPlay = true;
 
-        console.log("Rockets completed: " + rocketsCompleted);
+        // console.log("Rockets completed: " + rocketsCompleted);
         scoreElement.remove();
         scoreElement = p.createElement("h1", rocketsCompleted + "/" + totalRockets);
 
       } else {
-        console.log("Right places: " + nrCorrect);
+        // console.log("Right places: " + nrCorrect);
       }
     }
 }
@@ -381,7 +381,7 @@ let rocketBgs = [];
       // mechanism to trigger news onyl once per cycle of timeout.
       let currentTimeout = p.millis() % news_timeout;
       if (triggerNews && currentTimeout > news_timeout - 500) {
-        console.log("TRIGGER increase news");
+        // console.log("TRIGGER increase news");
         if (countNews < listOfNews.length) {
           countNews++;
           // reset new news alpha
@@ -457,19 +457,19 @@ let rocketBgs = [];
   }
 
   p.windowResized = function() {
-    resizeCanvas(p.windowWidth, p.windowHeight);
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
   }
 
   p.keyPressed = function() {
       if (p.keyCode === p.LEFT_ARROW) {
         listOfNews.splice(countNews-1, 1)
         countNews--;
-        console.log('countNews=' + countNews);
+        // console.log('countNews=' + countNews);
       } else if (p.keyCode === p.RIGHT_ARROW) {
         if (countNews < listOfNews.length) {
           countNews++;
         }
-        console.log('countNews=' + countNews);
+        // console.log('countNews=' + countNews);
       }
   }
 
