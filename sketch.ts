@@ -441,6 +441,7 @@ let rocketBgs = [];
       }
     }
 
+    p.noLoop();
 
   };
 

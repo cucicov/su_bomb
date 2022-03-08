@@ -29563,6 +29563,8 @@ var sketch = function sketch(p) {
         p.image(loseImg, this.windowWidth / 2 - loseImg.width / 2, this.windowHeight / 2 - loseImg.height / 2);
       }
     }
+
+    p.noLoop();
   };
 
   p.mousePressed = function () {
