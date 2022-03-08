@@ -7,7 +7,7 @@
     "heroku-postbuild": "parcel build index.html"
   },
   "dependencies": {
-    "node-p5": "^1.0.4",
+    "p5": "^1.4.1",
     "parcel-bundler": "^1.12.5"
   },
   "devDependencies": {
