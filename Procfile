@@ -1,1 +1,1 @@
-web: yarn run parcel index.html
+web: parcel index.html
