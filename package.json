@@ -2,9 +2,7 @@
   "name": "war_puzzle",
   "version": "1.0.0",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html",
-    "heroku-postbuild": "parcel build index.html"
+    "start": "http-server"
   },
   "dependencies": {
     "p5": "^1.4.1",
