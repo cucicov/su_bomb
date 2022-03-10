@@ -8,6 +8,7 @@
       this.height = img.height;
       this.pos = pos;
       this.img = img;
+      this.i = i;
     }
 
     draw() {
@@ -95,7 +96,6 @@
     }
 
     mousePressed(x, y) {
-      console.log("canPlay: " + this.canPlay);
       if(this.canPlay) {
         let m = createVector(x, y);
         let index = 0;
@@ -114,10 +114,7 @@
     }
 
     mouseDragged(x, y) {
-
-      console.log("mouseDragged; " + this.isDragging);
       if(this.isDragging) {
-        console.log("isDragging;");
         let m = createVector(x, y);
         this.dragPiece.pos.set(m).add(this.clickOffset);
       }
@@ -175,11 +172,12 @@
       this.pieces.forEach(pc => {
         let correctIndex = pc.i;
         let actualIndex = round((pc.pos.x - this.x)/this.w + (pc.pos.y - this.y)/this.h * this.side);
-        // console.log("Indexes: " + actualIndex + ":" + correctIndex);
+        console.log("Indexes: " + actualIndex + ":" + correctIndex);
         if(actualIndex === correctIndex) {
           nrCorrect += 1;
         }
       });
+      console.log("nrCorrect:" + nrCorrect + "::::" + "nrCorrectNeeded:" + nrCorrectNeeded);
       if(nrCorrect === nrCorrectNeeded) {
 
         // decrease news appearance timeout
